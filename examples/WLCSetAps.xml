@@ -1,0 +1,16 @@
+<activity name="TestTask">
+  <desc>Set the Primary WLC to APs</desc>
+  <login password="005846005f" user="cisco"/>
+  <devices type="ciscowlc">
+    <hostname>thecontroller.example.org</hostname>
+  </devices>
+  <commands>
+    <cmd>config ap primary wlc1 AP1 192.168.2.22</cmd>
+    <cmd>config ap secondary wlc2 AP1 192.168.3.22</cmd>
+    <cmd>end</cmd>
+    <cmd>save config</cmd>
+    <cmd>yes</cmd>
+  </commands>
+  <output dir="/tmp/sshRemoteControl" singleFile="Yes"/>
+  <log dir="/var/log/sshRemoteControl"/>
+</activity>

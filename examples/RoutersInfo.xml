@@ -1,0 +1,15 @@
+<activity name="TestTask">
+  <desc>Get some information from routers</desc>
+  <login password="005846005f" user="cisco"/>
+  <superuserPassword password="061a1a0000"/>
+  <devices type="ciscoios">
+    <hostname>somerouter</hostname>
+  </devices>
+  <commands>
+    <cmd>show ver | i IOS</cmd>
+    <cmd>show ip int b | i up</cmd>
+    <cmd>show int status | exc notconn</cmd>
+  </commands>
+  <output dir="/tmp/sshRemoteControl" singleFile="Yes"/>
+  <log dir="/var/log/sshRemoteControl"/>
+</activity>

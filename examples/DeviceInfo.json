@@ -1,0 +1,17 @@
+{
+    "name": "TestTask",
+    "logDir": "/var/log/sshRemoteControl",
+    "outputDir": "/tmp/sshRemoteControl",
+    "password": "1e0e03151e0e",
+    "commands": [
+        "date",
+        "ifconfig",
+        "uname -a"
+    ],
+    "desc": "Test Basic Task",
+    "devices": [
+        "192.168.14.18",
+        "somerouter.example.org"
+    ],
+    "login": "root"
+}
