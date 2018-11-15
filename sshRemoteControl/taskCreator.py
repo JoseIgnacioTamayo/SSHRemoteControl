@@ -1,6 +1,4 @@
-#!/usr/bin/python3
-
-"""fileRemoteControl.
+"""taskCreator
 
 This makes a Task file to be run with sshRemoteControl,
 taking input from the console.
@@ -10,8 +8,9 @@ Other extensions are NOT considered.
 
 Example:
 
-    python3 fileRemoteControl.py <Task file>
-    python3 fileRemoteControl.py -h|--help
+    python3 taskCreator.py <Task file>
+    python3 taskCreator.py -e|--encrypt
+    python3 taskCreator.py -h|--help
 
 """
 
@@ -26,11 +25,16 @@ def banner():
     """Print a banner on STDOUT about how to call this program."""
     print("""
 Usage:
-    fileRemoteControl.py <file>
+
+    taskCreator.py <file>
         <file> is the XML or JSON file to write.
         It must end in either .xml or .json
 
-    fileRemoteControl.py -h|--help"
+    taskCreator.py -e|--encrypt
+        Takes a password on STDIN and retuns it encrypted.
+        Used to manually edit Task files.
+
+    taskCreator.py -h|--help
 
 by Ignacio Tamayo (c) 2018. tamayo_j@minet.net
 """)
@@ -50,15 +54,36 @@ def execute():
         banner()
         return 7
     elif len(sys.argv) == 2:
-        if sys.argv[1].lower() in ("-h", "--help"):
-            banner()
-            return 0
-        else:
-            return makeTask(sys.argv[1])
+        try:
+            if sys.argv[1].lower() in ("-h", "--help"):
+                banner()
+                return 0
+            elif sys.argv[1].lower() in ("-e", "--encrypt"):
+                return printEncrypt()
+            else:
+                return makeTask(sys.argv[1])
+        except KeyboardInterrupt:
+            return 99
     else:
         print("ERR: Invalid arguments")
         banner()
         return 8
+
+
+def printEncrypt():
+    """Takes a password on STDIN and retuns it encrypted.
+
+        Used to manually edit Task files.
+    """
+    try:
+        user = input('Username: ')
+        passwd = getpass('Password: ')
+        print("Encrypted Password = %s" %
+              Activity.xor_crypt_string(passwd, user))
+        return 0
+    except EOFError:
+        print("ERR: Unable to encrypt password text")
+        return 21
 
 
 def makeTask(filename):
@@ -162,7 +187,7 @@ def fillFromCLI(anActivity):
 if __name__ == "__main__":
     execute()
 
-"""fileRemoteControl
+"""taskCreator
 
 Copyright (c) 2018 Jose Ignacio Tamayo Segarra
 

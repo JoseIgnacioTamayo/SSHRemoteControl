@@ -14,12 +14,18 @@ The list of devices to connect to, connection parameters and commands to execute
 
 This tool is used for executing a set of pre-tested and well-known commands via SSH on a set of network devices, from a management station and later check the output files and log for processing.
 
-In order to easily create the **TASK** file, a STDIN/STDOUT scripts creates it for you, from the shell.
+The **TASK** file, a simple text file in JSON or XML format, contains the login credentials as encrypted text.
 
-	python fileRemoteControl.py <TaskFile>
+In order to create your own **TASK** files with the credentials appropriately encrypted, an scripts creates it from STDIN/STDOUT.
+
+	python taskCreator.py <TaskFile>
 
 Once created, the **TASK** files are easily maintanable, could be subject to version control (git or svn), and by text manipulation can be derived into similar scripts.
 This offers an option to dealing with CSV files.
+
+Another way to create your own **TASK** files is to take an existing one, making a copy and just changing the parameters. As the **TASK** is an structured text file, this would be easy. As per the encrypted credentials, use the previous script to obtain the encrypted text for a password:
+
+		python taskCreator.py -encrypt
 
 After the execution of any of the scripts above, a small summary or the **TASK** is written to *STDOUT* as:
 
@@ -30,6 +36,9 @@ After the execution of any of the scripts above, a small summary or the **TASK**
             Devices: {{number of devices}}
             {{...}}
     ----------------------------------------
+
+
+> The encryption mechanism is weak, and by reading the Python source files it can be easily reversed-engineered. Do not rely on this for security, the encryption is intended for obscuring a bit the text in the **TASK** files.
 
 ## About **TASKs**
 

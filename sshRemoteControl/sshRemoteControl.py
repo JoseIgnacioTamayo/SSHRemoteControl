@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 """sshRemoteControl.
 
 Script to deliver several commands and obtain output from
@@ -113,7 +111,10 @@ def runTask(filename):
     anActivity.printSummary()
 
     print("Running...")
-    anActivity.run()
+    try:
+        anActivity.run()
+    except KeyboardInterrupt:
+        return 99
     return 0
 
 
