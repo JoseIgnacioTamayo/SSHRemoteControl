@@ -151,8 +151,10 @@ def fillFromCLI(anActivity):
         anActivity.description = input('Description: ')
         anActivity.user = input('Login User: ')
         anActivity.password = getpass('Login Password: ')
+        inputList = list(Devices.listOfDeviceTypes)
+        inputList.append("[default]")
         aDeviceType = input(
-            'Device Type ' + str(Devices.listOfDeviceTypes) + ': ')
+            'Device Type %s: ' % inputList)
         if aDeviceType not in Devices.listOfDeviceTypes:
             anActivity.deviceType = ""
         else:
@@ -172,11 +174,11 @@ def fillFromCLI(anActivity):
         while c and c != "":
             anActivity.commands.append(c)
             c = input('Command: ')
-        if inputYesNo('Output to a file ? ([No]/Yes) '):
+        if inputYesNo('Output to a file instead of console text? ([No]/Yes) '):
             anActivity.outputDir = input('Output Directory: ')
             if inputYesNo('Single output file ? ([No]/Yes) '):
                 anActivity.singleFile = True
-        if inputYesNo('Log to a file ? ([No]/Yes) '):
+        if inputYesNo('Log to a file instead of console text? ([No]/Yes) '):
             anActivity.logDir = input('Log Directory: ')
         print("")
         return True

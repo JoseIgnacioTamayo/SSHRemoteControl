@@ -143,6 +143,7 @@ For Linux-like systems, the libraries 'libxml2-dev' and 'libxslt1-dev' are neede
  * Support for YAML files
  * Support for INI files
  * Support for SSH key-based authentication
+ * Support for TELNET as fallback of SSH
 
 ## License
 
