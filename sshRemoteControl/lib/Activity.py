@@ -106,12 +106,10 @@ class Activity(object):
                     self.superuserPassword, self.user)
             if root.find('output') is not None:
                 self.outputDir = root.find('output').get('dir')
-                self.outputFilename = timestampedFilename(self.name)
                 if root.find('output').get('singleFile').lower() == 'yes':
                     self.singleFile = True
             if root.find('log') is not None:
                 self.logDir = root.find('log').get('dir')
-                self.logFilename = timestampedFilename(self.name)
             self.targets = []
             self.commands = []
             if root.find('devices').get('type') is not None:
@@ -263,10 +261,11 @@ class Activity(object):
         self.password = xor_decrypt_string(self.password, self.user)
         self.targets = data['devices']
         self.commands = data['commands']
-        self.outputFilename = timestampedFilename(self.name)
-        self.logFilename = timestampedFilename(self.name)
         try:
             self.deviceType = data['type']
+            self.outputDir = data['outputDir']
+            self.singleFile = data['singleFile']
+            self.logDir = data['logDir']
         except KeyError:
             pass
         try:
@@ -275,18 +274,6 @@ class Activity(object):
                 self.superuserPassword,
                 self.user)
             self.superuserNeeded = True
-        except KeyError:
-            pass
-        try:
-            self.outputDir = data['outputDir']
-        except KeyError:
-            pass
-        try:
-            self.singleFile = data['singleFile']
-        except KeyError:
-            pass
-        try:
-            self.logDir = data['logDir']
         except KeyError:
             pass
         return True
@@ -321,8 +308,6 @@ class Activity(object):
         if self.deviceType:
             if self.deviceType not in Devices.listOfDeviceTypes:
                 raise ValueError("Invalid device type " + self.deviceType)
-        self.outputFilename = timestampedFilename(self.name)
-        self.logFilename = timestampedFilename(self.name)
 
     def printSummary(self):
         """Print some basic info about the Activity to STDOUT."""
@@ -336,12 +321,12 @@ class Activity(object):
         print("\tDevices: %d " % len(self.targets))
         if self.singleFile:
             print("\tOutput File: %s " % os.path.join(
-                self.outputDir, self.outputFilename))
+                self.outputDir, timestampedFilename(self.name+"_OUT")))
         elif self.outputDir:
             print("\tOutput Folder: %s  " % self.outputDir)
         if self.logDir:
             print("\tLog File: %s  " % os.path.join(
-                self.logDir, self.logFilename))
+                self.logDir, timestampedFilename(self.name+"_LOG")))
         print("----------------------------------------")
 
     def printCredentials(self):
@@ -358,6 +343,8 @@ class Activity(object):
 
         Errors are placed in the LogFile of the Activity.
         """
+        self.outputFilename = timestampedFilename(self.name+"_OUT")
+        self.logFilename = timestampedFilename(self.name+"_LOG")
         self._openLogFile()
         if self.singleFile:
             self._openOutputFile(self.outputFilename)
